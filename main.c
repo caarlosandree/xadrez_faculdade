@@ -1,81 +1,126 @@
 /*
-    Autor: Carlos André Sabino
-    Nível: Aventureiro
-    Descrição:
-    Este programa simula a movimentação das peças Bispo, Torre e Rainha,
-    utilizando estruturas de repetição e boas práticas de codificação.
+Autor: Carlos André Sabino
+Nível: Mestre
+Descrição:
+Este programa simula a movimentação das peças Bispo, Torre, Rainha e Cavalo,
+utilizando estruturas de repetição e recursividade para movimentos complexos.
 */
 
-#include <stdio.h>
+#include <stdio.h> // Biblioteca padrão de entrada e saída
 
-//Número de movimentações das peças
-int mov_bispo=5;
-int mov_torre=5;
-int mov_rainha=8;
-int mov_cavalo = 1;
-int mov_cavalo2 = 2;
+// Variáveis globais usadas nos loops
+int i, j;
 
-int main() {
-    int i; //Controle de Laços
-    int j; //Controle de Laços
+//--------------------------------------
+// Função recursiva que simula a Torre
+//--------------------------------------
+// A Torre se move em linha reta (horizontal ou vertical).
+// Aqui, simulamos o movimento "Direita" com recursão.
+void torre(int casas) {
+    if (casas <= 0) {
+        return; // Caso base: encerra a recursão quando não há mais casas
+    }
+    printf("Direita\n"); // Um passo para a direita
+    torre(casas - 1);    // Chamada recursiva para o próximo passo
+}
 
-    printf("==================================\n");
-    printf(" Movimentação das peças de xadrez\n");
-    printf("==================================\n");
-
-    printf("Movimentação do Bispo\n");
-    // O Bispo se move 5 casas na diagonal superior direita,
-    // representada por uma combinação de "Cima" e "Direita".
-
-    for (i=0; i < mov_bispo; i++) {
-        printf("↑ cima\n");
-        printf("→ direita\n");
+//--------------------------------------------------
+// Função recursiva com laços que simula o Bispo
+//--------------------------------------------------
+// O Bispo se move em diagonal. Aqui usamos loops aninhados
+// para simular um passo "Cima" + "Direita", recursivamente.
+void bispo(int casas_restantes) {
+    if (casas_restantes <= 0) {
+        return; // Caso base da recursão
     }
 
-    printf("\n");
-
-    printf("Movimentação da Torre\n");
-    // A Torre se move 5 casas para a direita.
-
-    i=0; //Reinicia o contador.
-    while (i < mov_torre) {
-        printf("→ direita\n");
-        i++;
-    }
-
-    printf("\n");
-
-    printf("Movimentação da Rainha\n");
-    // A Rainha se move 8 casas para a esquerda.
-
-    i=0; //Reinicia o contador.
-    do {
-        printf("← esquerda\n");
-        i++;
-    } while (i < mov_rainha);
-
-    printf("\n");
-
-    printf("Movimentação do Cavalo\n");
-    // O Cavalo se move 2 baixo e 1 esquerda.
-    // O movimento do cavalo é representado por dois movimentos:,
-    // representada por um 'L'.
-
-
-    // Primeiro movimento: 2 casas para baixo
-    for (i = 0; i < mov_cavalo2; i++) {
-        printf("baixo ↓\n");
-
-        // Depois do segundo "baixo", faz a esquerda
-        if (i == mov_cavalo2 - 1) {
-            for (j = 0; j < mov_cavalo; j++) {
-                printf("esquerda ←\n");
-            }
+    // Um passo "diagonal" (1x Cima e 1x Direita)
+    for (i = 0; i < 1; i++) {
+        printf("Cima\n");
+        for (j = 0; j < 1; j++) {
+            printf("Direita\n");
         }
     }
 
-    printf("\n");
-    printf("Fim do programa.");
+    bispo(casas_restantes - 1); // Recursão: próximo passo diagonal
+}
 
-    return 0;
+//------------------------------------------------------
+// Função recursiva que simula a Rainha (modo simplificado)
+//------------------------------------------------------
+// A Rainha pode mover-se como Torre e Bispo. Aqui simulamos
+// apenas movimentos "Esquerda", com recursão simples.
+void rainha(int casas) {
+    if (casas <= 0) {
+        return; // Caso base
+    }
+    printf("Esquerda\n");  // Um passo para a esquerda
+    rainha(casas - 1);     // Próximo passo
+}
+
+//------------------------------------------------------
+// Função que simula o movimento do Cavalo
+//------------------------------------------------------
+// O Cavalo move-se em "L" (2 casas em uma direção + 1 em outra).
+// Aqui, fazemos 2x "Cima" e 1x "Direita", com exemplos de `continue` e `break`.
+void cavalo() {
+    printf("=========================\n");
+    printf(" Movimentação do Cavalo\n");
+    printf("=========================\n");
+
+    int mov_vertical = 2;    // Duas casas para cima
+    int mov_horizontal = 1;  // Uma casa para a direita
+    int k, l;
+
+    // Loop para as duas subidas
+    for (k = 0; k < mov_vertical; k++) {
+        printf("Cima\n");
+
+        // Exemplo didático de uso do `continue`
+        if (k == 0) {
+            continue; // Pula o restante da iteração
+        }
+    }
+
+    // Loop para um movimento horizontal
+    for (l = 0; l < mov_horizontal; l++) {
+        printf("Direita\n");
+
+        // Exemplo de uso do `break`
+        if (l == 0 && mov_horizontal > 0) {
+            break; // Encerra o loop após o primeiro passo
+        }
+    }
+}
+
+//-------------------------
+// Função principal
+//-------------------------
+int main() {
+    int num_casas_torre_bispo = 5; // Quantidade de casas para Torre e Bispo
+    int num_casas_rainha = 8;      // Quantidade de casas para a Rainha
+
+    printf("=========================\n");
+    printf(" Movimentação da Torre \n");
+    printf("=========================\n");
+    torre(num_casas_torre_bispo);
+    printf("\n");
+
+    printf("=========================\n");
+    printf(" Movimentação do Bispo \n");
+    printf("=========================\n");
+    bispo(num_casas_torre_bispo);
+    printf("\n");
+
+    printf("=========================\n");
+    printf(" Movimentação da Rainha \n");
+    printf("=========================\n");
+    rainha(num_casas_rainha);
+    printf("\n");
+
+    // Movimentação do Cavalo
+    cavalo();
+    printf("\n");
+
+    return 0; // Fim do programa
 }
